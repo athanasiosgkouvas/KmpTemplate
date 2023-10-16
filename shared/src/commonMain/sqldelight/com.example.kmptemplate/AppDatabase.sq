@@ -1,0 +1,10 @@
+CREATE TABLE Test(
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL
+);
+
+insertIntoTest:
+INSERT INTO Test(id, name) VALUES (?,?);
+
+selectAll:
+SELECT * FROM Test;

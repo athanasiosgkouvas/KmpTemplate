@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.sqlDelight)
 }
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
@@ -10,7 +11,7 @@ kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "11"
+                jvmTarget = "17"
             }
         }
     }
@@ -41,6 +42,9 @@ kotlin {
                 implementation(libs.bundles.ktor.common)
                 implementation(libs.multiplatformSettings.common)
                 implementation(libs.kotlinx.dateTime)
+                implementation(libs.kotlinx.serialization)
+                implementation(libs.common.sqlDelight)
+                implementation(libs.common.sqlDelight.extension)
                 api(libs.touchlab.kermit)
             }
         }
@@ -53,11 +57,13 @@ kotlin {
             dependencies {
                 implementation(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.ktor.client.okHttp)
+                implementation(libs.android.sqlDelight)
             }
         }
         val iosMain by getting {
             dependencies {
                 implementation(libs.ktor.client.ios)
+                implementation(libs.ios.sqlDelight)
                 api(libs.touchlab.kermit.simple)
             }
         }
@@ -75,11 +81,19 @@ android {
         abortOnError = true
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "17"
+}
+
+sqldelight {
+    databases {
+        create("AppDatabase"){
+            packageName.set("com.example.kmptemplate")
+        }
+    }
 }
