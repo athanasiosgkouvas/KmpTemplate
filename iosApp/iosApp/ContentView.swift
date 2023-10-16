@@ -2,10 +2,11 @@ import SwiftUI
 import shared
 
 struct ContentView: View {
-	let greet = Greeting().greet()
+
+    @ObservedObject var viewModel: MainViewModel = MainViewModel()
 
 	var body: some View {
-		Text(greet)
+		Text(viewModel.state.message)
 	}
 }
 
