@@ -1,10 +1,14 @@
 package com.example.kmptemplate.mvi
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -69,5 +73,17 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
     protected fun setEffect(builder: () -> Effect) {
         val effectValue = builder()
         viewModelScope.launch { _effect.send(effectValue) }
+    }
+
+    protected fun <T> collect(
+        flow: Flow<T>, collect: (T) -> Unit
+    ) {
+        viewModelScope.launch {
+            flow
+                .flowOn(Dispatchers.IO)
+                .collect {
+                    collect(it)
+                }
+        }
     }
 }

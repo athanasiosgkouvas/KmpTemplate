@@ -6,7 +6,7 @@ public protocol MainViewModelType {
 }
 
 public class MainViewModel: MainActivityViewModel, ObservableObject, MainViewModelType{
-    @Published var state: MainActivityContractState = MainActivityContractState(
+    @Published public var state: MainActivityContractState = MainActivityContractState(
         message: ""
     )
 

@@ -13,7 +13,7 @@ interface MainActivityContract{
     sealed interface Effect: UiEffect
 }
 
-class MainActivityViewModel: BaseViewModel<MainActivityContract.Event, MainActivityContract.State, MainActivityContract.Effect>(){
+open class MainActivityViewModel: BaseViewModel<MainActivityContract.Event, MainActivityContract.State, MainActivityContract.Effect>(){
     override fun createInitialState(): MainActivityContract.State  = MainActivityContract.State()
 
     override fun handleEvent(event: MainActivityContract.Event) {
