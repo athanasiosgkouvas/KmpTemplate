@@ -50,7 +50,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(libs.kotlin.test)
+                implementation(libs.bundles.shared.commonTest)
             }
         }
         val androidMain by getting {

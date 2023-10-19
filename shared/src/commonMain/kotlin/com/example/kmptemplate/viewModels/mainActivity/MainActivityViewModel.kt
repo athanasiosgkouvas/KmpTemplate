@@ -6,18 +6,31 @@ import com.example.kmptemplate.mvi.UiEvent
 import com.example.kmptemplate.mvi.UiState
 
 interface MainActivityContract{
-    sealed interface Event: UiEvent
+    sealed interface Event: UiEvent{
+        data object OnButtonClicked: Event
+    }
 
-    data class State(val message: String = "Hello World!"): UiState
+    data class State(val message: String = ""): UiState
 
-    sealed interface Effect: UiEffect
+    sealed interface Effect: UiEffect{
+        data object ShowSnackBar: Effect
+    }
 }
 
 open class MainActivityViewModel: BaseViewModel<MainActivityContract.Event, MainActivityContract.State, MainActivityContract.Effect>(){
     override fun createInitialState(): MainActivityContract.State  = MainActivityContract.State()
 
     override fun handleEvent(event: MainActivityContract.Event) {
-        TODO("Not yet implemented")
+        when(event){
+            MainActivityContract.Event.OnButtonClicked -> {
+                setState {
+                    copy(
+                        message = "Hello World!"
+                    )
+                }
+                setEffect { MainActivityContract.Effect.ShowSnackBar }
+            }
+        }
     }
 
 }
